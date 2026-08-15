@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Perfil — adivinhe a resposta com dicas. Solo ou em sala." />
+  <title>Perfil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./css/app.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="glow glow-a" aria-hidden="true"></div>
+  <div class="glow glow-b" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Perfil — início">
+      <span class="brand-mark">P</span>
+      <span class="brand-name">Perfil</span>
+    </a>
+    <div class="topbar-meta" id="topMeta" hidden>
+      <span class="pill" id="modePill"></span>
+      <span class="pill muted" id="scorePill"></span>
+    </div>
+  </header>
+
+  <main id="app">
+    <!-- HOME -->
+    <section class="screen active" id="screen-home" data-screen="home">
+      <div class="hero">
+        <p class="eyebrow">Jogo de dicas</p>
+        <h1 class="hero-title">Perfil</h1>
+        <p class="hero-lead">Revele dicas. Arrisque o chute. Quem acerta com menos pistas leva mais pontos.</p>
+        <div class="cta-row">
+          <button type="button" class="btn btn-primary" data-go="solo-setup">Jogar solo</button>
+          <button type="button" class="btn btn-ghost" data-go="room-setup">Criar / entrar em sala</button>
+        </div>
+        <p class="fineprint" id="statsLine">Carregando baralho…</p>
+      </div>
+    </section>
+
+    <!-- SOLO SETUP -->
+    <section class="screen" id="screen-solo-setup" data-screen="solo-setup">
+      <div class="panel">
+        <button type="button" class="back" data-go="home">← Voltar</button>
+        <h2>Partida solo</h2>
+        <p class="panel-lead">Escolha a categoria ou deixe o baralho decidir.</p>
+        <label class="field">
+          <span>Apelido (opcional)</span>
+          <input id="soloNick" type="text" maxlength="24" placeholder="Como te chamamos?" autocomplete="nickname" />
+        </label>
+        <label class="field">
+          <span>Categoria</span>
+          <select id="soloCategory">
+            <option value="">Aleatória</option>
+            <option value="pessoa">Pessoa</option>
+            <option value="lugar">Lugar</option>
+            <option value="ano">Ano</option>
+            <option value="coisa">Coisa</option>
+          </select>
+        </label>
+        <button type="button" class="btn btn-primary btn-block" id="btnSoloStart">Começar</button>
+      </div>
+    </section>
+
+    <!-- ROOM SETUP -->
+    <section class="screen" id="screen-room-setup" data-screen="room-setup">
+      <div class="panel">
+        <button type="button" class="back" data-go="home">← Voltar</button>
+        <h2>Sala</h2>
+        <p class="panel-lead">Crie uma sala e compartilhe o código, ou entre em uma existente.</p>
+        <label class="field">
+          <span>Seu apelido</span>
+          <input id="roomNick" type="text" maxlength="24" placeholder="Obrigatório" autocomplete="nickname" />
+        </label>
+        <div class="split">
+          <button type="button" class="btn btn-primary" id="btnCreateRoom">Criar sala</button>
+          <div class="join-box">
+            <input id="roomCodeInput" type="text" maxlength="6" placeholder="Código" autocomplete="off" class="code-input" />
+            <button type="button" class="btn btn-ghost" id="btnJoinRoom">Entrar</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLAY -->
+    <section class="screen" id="screen-play" data-screen="play">
+      <div class="play-layout">
+        <aside class="play-side" id="playSide" hidden>
+          <h3>Placar</h3>
+          <ul class="scoreboard" id="scoreboard"></ul>
+          <p class="room-code-line">Sala <strong id="roomCodeLabel"></strong></p>
+        </aside>
+
+        <div class="play-main">
+          <div class="status-row">
+            <span class="cat-badge" id="catBadge">—</span>
+            <span class="pill muted" id="tipsMeta">0 / 20 dicas</span>
+          </div>
+
+          <div class="tip-stage" id="tipStage" aria-live="polite">
+            <p class="tip-empty">Toque em <strong>Revelar dica</strong> para começar.</p>
+          </div>
+
+          <form class="guess-form" id="guessForm">
+            <label class="sr-only" for="guessInput">Seu chute</label>
+            <input id="guessInput" type="text" maxlength="80" placeholder="Qual é a resposta?" autocomplete="off" />
+            <button type="submit" class="btn btn-primary">Chutar</button>
+          </form>
+
+          <div class="play-actions">
+            <button type="button" class="btn btn-accent" id="btnReveal">Revelar dica</button>
+            <button type="button" class="btn btn-ghost" id="btnGiveUp">Desistir</button>
+            <button type="button" class="btn btn-ghost" id="btnNext" hidden>Próxima carta</button>
+            <button type="button" class="btn btn-ghost" id="btnHostStart" hidden>Nova rodada</button>
+          </div>
+
+          <p class="feedback" id="feedback" role="status"></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" hidden></div>
+
+  <script>
+    window.PERFIL_API_BASE = window.PERFIL_API_BASE || 'https://api-bolao.markinjr92.com.br/perfil';
+  </script>
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
