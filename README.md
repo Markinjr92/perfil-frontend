@@ -2,27 +2,22 @@
 
 UI do jogo Perfil para publicar no **Render** (Static Site).
 
-## Local
-
-Abra com qualquer server estático, por exemplo:
-
-```bash
-npx serve .
-```
-
-Por padrão a API aponta para:
-
-`https://api-bolao.markinjr92.com.br/perfil`
-
-Override em `index.html` (`window.PERFIL_API_BASE`) ou no console.
-
 ## Render
 
-- **Type:** Static Site
-- **Build:** vazio (ou `echo ok`)
-- **Publish directory:** `.`
+| Campo | Valor |
+|-------|--------|
+| **Build Command** | `true` (ou deixe um no-op) |
+| **Publish Directory** | `public` |
 
-## Fluxo
+Igual ao `overlay-obs`: os arquivos ficam em `public/`.
 
-1. Solo: escolher categoria → revelar dicas → chutar  
-2. Sala: criar/entrar → host inicia rodada → host revela dicas → todos chutam
+Há um `render.yaml` no repo com `staticPublishPath: ./public`.
+
+## Local
+
+```bash
+npx serve public
+```
+
+API padrão: `https://api-bolao.markinjr92.com.br/perfil`  
+(override em `public/index.html` via `window.PERFIL_API_BASE`)
