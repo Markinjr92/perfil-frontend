@@ -1,0 +1,7 @@
+# https://render.com/docs/static-sites
+services:
+  - type: web
+    name: perfil-frontend
+    runtime: static
+    buildCommand: "true"
+    staticPublishPath: ./public
