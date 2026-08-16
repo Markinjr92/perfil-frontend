@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Perfil — adivinhe a resposta com dicas. Solo ou em sala." />
+  <meta name="description" content="Perfil — tabuleiro, dados e dicas. Solo ou em sala." />
   <title>Perfil</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,12 +27,11 @@
   </header>
 
   <main id="app">
-    <!-- HOME -->
     <section class="screen active" id="screen-home" data-screen="home">
       <div class="hero">
-        <p class="eyebrow">Jogo de dicas</p>
+        <p class="eyebrow">Jogo de tabuleiro</p>
         <h1 class="hero-title">Perfil</h1>
-        <p class="hero-lead">Revele dicas. Arrisque o chute. Quem acerta com menos pistas leva mais pontos.</p>
+        <p class="hero-lead">Role o dado, revele dicas e avance as casas que sobrarem — quem chega ao fim vence.</p>
         <div class="cta-row">
           <button type="button" class="btn btn-primary" data-go="solo-setup">Jogar solo</button>
           <button type="button" class="btn btn-ghost" data-go="room-setup">Criar / entrar em sala</button>
@@ -41,12 +40,11 @@
       </div>
     </section>
 
-    <!-- SOLO SETUP -->
     <section class="screen" id="screen-solo-setup" data-screen="solo-setup">
       <div class="panel">
         <button type="button" class="back" data-go="home">← Voltar</button>
         <h2>Partida solo</h2>
-        <p class="panel-lead">Escolha a categoria ou deixe o baralho decidir.</p>
+        <p class="panel-lead">Treino rápido sem tabuleiro — escolha a categoria.</p>
         <label class="field">
           <span>Apelido (opcional)</span>
           <input id="soloNick" type="text" maxlength="24" placeholder="Como te chamamos?" autocomplete="nickname" />
@@ -65,12 +63,11 @@
       </div>
     </section>
 
-    <!-- ROOM SETUP -->
     <section class="screen" id="screen-room-setup" data-screen="room-setup">
       <div class="panel">
         <button type="button" class="back" data-go="home">← Voltar</button>
         <h2>Sala</h2>
-        <p class="panel-lead">Crie uma sala e compartilhe o código, ou entre em uma existente.</p>
+        <p class="panel-lead">Crie a sala, espere os amigos e inicie o tabuleiro quando quiser.</p>
         <label class="field">
           <span>Seu apelido</span>
           <input id="roomNick" type="text" maxlength="24" placeholder="Obrigatório" autocomplete="nickname" />
@@ -85,23 +82,33 @@
       </div>
     </section>
 
-    <!-- PLAY -->
     <section class="screen" id="screen-play" data-screen="play">
-      <div class="play-layout">
+      <div class="play-layout play-layout-board">
         <aside class="play-side" id="playSide" hidden>
-          <h3>Placar</h3>
+          <h3>Jogadores</h3>
           <ul class="scoreboard" id="scoreboard"></ul>
           <p class="room-code-line">Sala <strong id="roomCodeLabel"></strong></p>
+          <p class="phase-line" id="phaseLine"></p>
+          <p class="rules-mini" id="rulesMini"></p>
         </aside>
 
         <div class="play-main">
+          <div class="board-wrap" id="boardWrap" hidden>
+            <div id="boardRoot" class="board-root" aria-label="Tabuleiro"></div>
+            <div class="dice-panel">
+              <div class="dice" id="diceFace" aria-live="polite">—</div>
+              <p class="dice-caption" id="diceCaption">Dado</p>
+            </div>
+          </div>
+
           <div class="status-row">
             <span class="cat-badge" id="catBadge">—</span>
             <span class="pill muted" id="tipsMeta">0 / 20 dicas</span>
+            <span class="pill muted" id="turnPill" hidden></span>
           </div>
 
           <div class="tip-stage" id="tipStage" aria-live="polite">
-            <p class="tip-empty">Toque em <strong>Revelar dica</strong> para começar.</p>
+            <p class="tip-empty">Aguardando…</p>
           </div>
 
           <form class="guess-form" id="guessForm">
@@ -111,8 +118,12 @@
           </form>
 
           <div class="play-actions">
-            <button type="button" class="btn btn-accent" id="btnReveal">Revelar dica</button>
-            <button type="button" class="btn btn-ghost" id="btnGiveUp">Desistir</button>
+            <button type="button" class="btn btn-primary" id="btnBeginGame" hidden>Iniciar jogo</button>
+            <button type="button" class="btn btn-accent" id="btnRoll" hidden>Rolar dado</button>
+            <button type="button" class="btn btn-accent" id="btnReveal" hidden>Revelar dica</button>
+            <button type="button" class="btn btn-ghost" id="btnSkip" hidden>Passar a vez</button>
+            <button type="button" class="btn btn-ghost" id="btnNextTurn" hidden>Próximo turno</button>
+            <button type="button" class="btn btn-ghost" id="btnGiveUp" hidden>Desistir</button>
             <button type="button" class="btn btn-ghost" id="btnNext" hidden>Próxima carta</button>
             <button type="button" class="btn btn-ghost" id="btnHostStart" hidden>Nova rodada</button>
           </div>

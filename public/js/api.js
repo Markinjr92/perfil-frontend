@@ -34,6 +34,21 @@ export const api = {
     request(`/v1/rooms/${code}`, {
       headers: playerToken ? { 'X-Player-Token': playerToken } : {},
     }),
+  roomBegin: (code, hostToken) =>
+    request(`/v1/rooms/${code}/begin`, {
+      method: 'POST',
+      headers: { 'X-Host-Token': hostToken },
+      body: {},
+    }),
+  roomRoll: (code, { hostToken, playerToken } = {}) =>
+    request(`/v1/rooms/${code}/roll`, {
+      method: 'POST',
+      headers: {
+        ...(hostToken ? { 'X-Host-Token': hostToken } : {}),
+        ...(playerToken ? { 'X-Player-Token': playerToken } : {}),
+      },
+      body: {},
+    }),
   roomStart: (code, hostToken, category) =>
     request(`/v1/rooms/${code}/start`, {
       method: 'POST',
@@ -51,5 +66,20 @@ export const api = {
       method: 'POST',
       headers: { 'X-Player-Token': playerToken },
       body: { guess },
+    }),
+  roomSkip: (code, hostToken) =>
+    request(`/v1/rooms/${code}/skip`, {
+      method: 'POST',
+      headers: { 'X-Host-Token': hostToken },
+      body: {},
+    }),
+  roomNext: (code, { hostToken, playerToken } = {}) =>
+    request(`/v1/rooms/${code}/next`, {
+      method: 'POST',
+      headers: {
+        ...(hostToken ? { 'X-Host-Token': hostToken } : {}),
+        ...(playerToken ? { 'X-Player-Token': playerToken } : {}),
+      },
+      body: {},
     }),
 };
