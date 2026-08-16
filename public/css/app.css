@@ -498,6 +498,45 @@ main {
   line-height: 1.35;
 }
 
+.howto {
+  margin-top: 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(243, 239, 230, 0.14);
+  background: rgba(243, 239, 230, 0.05);
+  padding: 0.55rem 0.75rem 0.75rem;
+}
+
+.howto summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--mustard);
+  list-style: none;
+}
+
+.howto summary::-webkit-details-marker { display: none; }
+
+.howto-steps {
+  margin: 0.65rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.78rem;
+  color: rgba(243, 239, 230, 0.78);
+  line-height: 1.45;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.howto-dice {
+  margin: 0.65rem 0 0;
+  font-size: 0.72rem;
+  color: rgba(243, 239, 230, 0.55);
+}
+
+.howto-home {
+  margin-top: 1.35rem;
+  max-width: 28rem;
+}
+
 .pawn-dot {
   display: inline-block;
   width: 0.65rem;

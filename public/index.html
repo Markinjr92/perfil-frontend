@@ -36,6 +36,15 @@
           <button type="button" class="btn btn-primary" data-go="solo-setup">Jogar solo</button>
           <button type="button" class="btn btn-ghost" data-go="room-setup">Criar / entrar em sala</button>
         </div>
+        <details class="howto howto-home">
+          <summary>Guia rápido (sala)</summary>
+          <ol class="howto-steps">
+            <li>2 a 6 jogadores · host inicia quando quiser</li>
+            <li>Ordem de turno sorteada no início</li>
+            <li>Dado → categoria · host revela dicas · todos chutam</li>
+            <li>Acerte cedo = ande mais · chegue ao fim para vencer</li>
+          </ol>
+        </details>
         <p class="fineprint" id="statsLine">Carregando baralho…</p>
       </div>
     </section>
@@ -90,6 +99,19 @@
           <p class="room-code-line">Sala <strong id="roomCodeLabel"></strong></p>
           <p class="phase-line" id="phaseLine"></p>
           <p class="rules-mini" id="rulesMini"></p>
+
+          <details class="howto" id="howtoBox" open>
+            <summary>Como jogar</summary>
+            <ol class="howto-steps">
+              <li><strong>Lobby:</strong> compartilhe o código. O host inicia com 2 a 6 jogadores.</li>
+              <li><strong>Ordem:</strong> ao iniciar, a vez é <em>sorteada</em> (não pela entrada).</li>
+              <li><strong>Dado:</strong> quem está na vez rola (host também pode). O número define a categoria.</li>
+              <li><strong>Dicas:</strong> o host revela uma a uma. Qualquer um pode chutar.</li>
+              <li><strong>Avanço:</strong> quem acerta anda as dicas que ainda sobraram (ex.: 3 reveladas de 20 → +17).</li>
+              <li><strong>Vitória:</strong> primeiro a chegar na casa final vence.</li>
+            </ol>
+            <p class="howto-dice">Dado: 1–2 Pessoa · 3 Lugar · 4 Ano · 5 Coisa · 6 Coringa</p>
+          </details>
         </aside>
 
         <div class="play-main">

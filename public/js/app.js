@@ -155,7 +155,9 @@ function applyRoomUi(data) {
 
   $('#roomCodeLabel').textContent = data.code;
   $('#phaseLine').textContent = phaseLabel[phase] || phase;
-  $('#rulesMini').textContent = data.rules?.movement || '';
+  $('#rulesMini').textContent = [data.rules?.players, data.rules?.movement]
+    .filter(Boolean)
+    .join(' · ');
   renderScoreboard(data.players, data.me?.id, data.currentPlayer?.id);
   $('#modePill').textContent = `Sala ${data.code}`;
   $('#scorePill').textContent = `casa ${data.me?.position ?? 0}`;
@@ -207,12 +209,19 @@ function applyRoomUi(data) {
     $('#guessForm').querySelector('button[type="submit"]').disabled = true;
   } else if (isLobby) {
     $('#catBadge').textContent = 'Lobby';
-    $('#tipsMeta').textContent = `${(data.players || []).length} jogador(es)`;
+    const n = (data.players || []).length;
+    $('#tipsMeta').textContent = `${n} / 6 jogador(es)`;
+    const need = Math.max(0, 2 - n);
     $('#tipStage').innerHTML = state.isHost
-      ? '<p class="tip-empty">Quando todos entrarem, toque em <strong>Iniciar jogo</strong>.</p>'
-      : '<p class="tip-empty">Aguardando o host iniciar o jogo…</p>';
+      ? `<p class="tip-empty">${
+          need > 0
+            ? `Faltam <strong>${need}</strong> jogador(es) para iniciar (mín. 2).`
+            : 'Todos prontos? Toque em <strong>Iniciar jogo</strong> — a ordem será <strong>sorteada</strong>.'
+        }</p>`
+      : '<p class="tip-empty">Aguardando o host iniciar o jogo… A ordem de turno será sorteada.</p>';
     $('#guessInput').disabled = true;
     $('#guessForm').querySelector('button[type="submit"]').disabled = true;
+    $('#btnBeginGame').disabled = n < 2;
   } else if (finished) {
     $('#tipStage').innerHTML = `<p class="tip-empty"><strong>${escapeHtml(
       data.winner?.nickname || 'Alguém'
@@ -330,10 +339,18 @@ $('#btnJoinRoom').addEventListener('click', async () => {
 
 $('#btnBeginGame').addEventListener('click', async () => {
   try {
-    await api.roomBegin(state.roomCode, state.hostToken);
-    setFeedback('Partida iniciada! Role o dado.');
-    await refreshRoom();
-    toast('Jogo iniciado');
+    const data = await api.roomBegin(state.roomCode, state.hostToken);
+    const order = (data.turnOrder || []).map((p) => p.nickname).join(' → ');
+    setFeedback(
+      order
+        ? `Ordem sorteada: ${order}. Começa ${data.firstPlayer || data.currentPlayer?.nickname}.`
+        : 'Partida iniciada! Role o dado.'
+    );
+    toast(`Começa: ${data.firstPlayer || data.currentPlayer?.nickname || '—'}`);
+    applyRoomUi(data);
+    // fecha o guia depois do início para liberar espaço
+    const box = $('#howtoBox');
+    if (box) box.open = false;
   } catch (err) {
     toast(err.message);
   }
